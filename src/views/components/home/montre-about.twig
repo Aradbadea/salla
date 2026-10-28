@@ -1,0 +1,21 @@
+{#
+| Variable          | Type    | Description                     |
+|-------------------|---------|---------------------------------|
+| component.image   | ?string | Image beside the text           |
+| component.title   | string  | Heading                         |
+| component.text    | string  | Paragraph                       |
+| position          | int     | Sorting number start from zero  |
+#}
+<section component-id="{{ componentId }}" data-testid="montre-about" class="montre-section">
+    <div class="montre-container montre-about">
+        <div class="montre-about__image">
+            {% if component.image %}
+                <img src="{{ component.image }}" alt="{{ component.title }}" loading="lazy" width="800" height="600">
+            {% endif %}
+        </div>
+        <div class="montre-about__copy">
+            <h2 class="montre-heading">{{ component.title }}</h2>
+            <p>{{ component.text }}</p>
+        </div>
+    </div>
+</section>

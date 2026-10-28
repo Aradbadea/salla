@@ -1,0 +1,71 @@
+{#
+| Variable         | Type    | Description                     |
+|------------------|---------|---------------------------------|
+| cart             | object  |                                 |
+| cart.items_count | int     |                                 |
+| cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
+
+Montre header: dark announcement bar (theme settings montre_announce_1..3),
+then a clean white nav with the wordmark, the main menu and icon buttons.
+#}
+{% set announce = [
+    theme.settings.get('montre_announce_1'),
+    theme.settings.get('montre_announce_2'),
+    theme.settings.get('montre_announce_3')
+] %}
+{% set use_text_logo = theme.settings.get('montre_text_logo', true) or not store.logo %}
+
+<header data-testid="store-header" class="store-header montre-header">
+
+  {% if announce|join('')|trim %}
+    <div class="montre-announce" role="region" aria-label="announcements">
+      <div class="montre-announce__inner">
+        {% for item in announce %}
+          {% if item|trim %}<span>{{ item }}</span>{% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div id="mainnav" class="main-nav-container montre-nav">
+      <div class="inner w-full">
+          <div class="montre-container montre-nav__row">
+              <div class="montre-nav__start">
+                  <a data-testid="store-header-mobile-toggle" class="lg:hidden mburger mburger--collapse montre-icon-btn" href="#mobile-menu" aria-label="Open menu">
+                    <i class="sicon-menu"></i>
+                  </a>
+                  <a data-testid="store-header-logo" class="navbar-brand montre-logo" href="{{ store.url }}">
+                      {% if use_text_logo %}
+                        <span class="montre-logo__text">{{ store.name|upper }}</span>
+                      {% else %}
+                        <img fetchpriority="high" loading="eager" src="{{ store.logo|cdn(175) }}" alt="{{ store.name }} logo">
+                      {% endif %}
+                      {% if is_page('index') %}
+                        <h1 class="sr-only">{{ store.name }}</h1>
+                      {% else %}
+                        <h2 class="sr-only">{{ store.name }}</h2>
+                      {% endif %}
+                  </a>
+                  <custom-main-menu></custom-main-menu>
+              </div>
+
+              <div class="montre-nav__end">
+                  {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+                      <salla-localization-modal data-testid="store-header-localization" show-trigger></salla-localization-modal>
+                  {% endif %}
+                  <button type="button" class="montre-icon-btn" aria-label="{{ theme.is_rtl ? 'بحث' : 'Search' }}"
+                          onclick="salla.event.emit('search::open')">
+                    <i class="sicon-search"></i>
+                  </button>
+                  <salla-user-menu data-testid="store-header-user-menu" avatar-only show-header show-trigger></salla-user-menu>
+                  <salla-cart-summary data-testid="store-header-cart" class="montre-cart">
+                    <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
+                  </salla-cart-summary>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  {# Bullet Delivery tag (shows only when the store has it enabled) #}
+  <salla-bullet-delivery-tag></salla-bullet-delivery-tag>
+</header>

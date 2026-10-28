@@ -1,0 +1,28 @@
+{#
+| Variable              | Type    | Description                         |
+|-----------------------|---------|-------------------------------------|
+| component.eyebrow     | ?string | Small label above the heading       |
+| component.title       | string  | Heading                             |
+| component.text        | ?string | Supporting line                     |
+| component.button_text | ?string | Button label                        |
+| component.url         | ?string | Button link                         |
+| position              | int     | Sorting number start from zero      |
+#}
+<section component-id="{{ componentId }}" data-testid="montre-preorder" class="montre-section">
+    <div class="montre-container">
+        <div class="montre-preorder">
+            <div class="montre-preorder__copy">
+                {% if component.eyebrow %}
+                    <p class="montre-eyebrow">{{ component.eyebrow }}</p>
+                {% endif %}
+                <h2 class="montre-preorder__title">{{ component.title }}</h2>
+                {% if component.text %}
+                    <p class="montre-preorder__text">{{ component.text }}</p>
+                {% endif %}
+            </div>
+            {% if component.button_text and component.url %}
+                <a href="{{ component.url }}" class="montre-btn">{{ component.button_text }}</a>
+            {% endif %}
+        </div>
+    </div>
+</section>

@@ -1,0 +1,53 @@
+{#
+Montre footer: wordmark + legal details, customer-care links (Salla footer menu),
+contact channels, accepted payments, copyright.
+Legal lines come from theme settings so the merchant can keep them accurate:
+  montre_footer_legal_name, montre_footer_cr, montre_footer_address, montre_footer_note
+#}
+{% set legal_name = theme.settings.get('montre_footer_legal_name') %}
+{% set legal_cr = theme.settings.get('montre_footer_cr') %}
+{% set legal_address = theme.settings.get('montre_footer_address') %}
+{% set footer_note = theme.settings.get('montre_footer_note') %}
+
+<footer data-testid="store-footer" class="store-footer montre-footer">
+  <div class="montre-container montre-footer__grid">
+    <div class="montre-footer__brand">
+      <a href="{{ link('/') }}" class="montre-footer__logo">{{ store.name|upper }}</a>
+      <p class="montre-footer__legal">
+        {% if legal_name %}<span>{{ legal_name }}</span>{% endif %}
+        {% if legal_cr %}<span>{{ legal_cr }}</span>{% endif %}
+        {% if legal_address %}<span>{{ legal_address }}</span>{% endif %}
+      </p>
+      {% if store.settings.tax.number %}
+        <p class="montre-footer__legal">
+          <span>{{ trans('common.elements.tax_number') }}: {{ store.settings.tax.number }}</span>
+        </p>
+      {% endif %}
+      <salla-trust-badges data-testid="store-footer-trust-badges" dark></salla-trust-badges>
+    </div>
+
+    <div>
+      <h3 class="montre-footer__head">{{ theme.settings.get('montre_footer_links_title') ?: trans('blocks.footer.pages_links') }}</h3>
+      <salla-menu data-testid="store-footer-menu" source="footer" with-cookie-preferences></salla-menu>
+    </div>
+
+    <div>
+      <h3 class="montre-footer__head">{{ theme.settings.get('montre_footer_contact_title') ?: (theme.is_rtl ? 'تواصل معنا' : 'Contact') }}</h3>
+      <salla-contacts data-testid="store-footer-contacts" hide-title></salla-contacts>
+      <salla-social data-testid="store-footer-social" class="montre-footer__social"></salla-social>
+    </div>
+
+    <div>
+      <h3 class="montre-footer__head">{{ theme.settings.get('montre_footer_payments_title') ?: (theme.is_rtl ? 'طرق الدفع' : 'We accept') }}</h3>
+      <salla-payments data-testid="store-footer-payments"></salla-payments>
+      {% if footer_note %}
+        <p class="montre-footer__note">{{ footer_note }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="montre-container montre-footer__bottom">
+    <span class="copyright-text">{% hook copyright %}</span>
+    <salla-apps-icons data-testid="store-footer-apps"></salla-apps-icons>
+  </div>
+</footer>

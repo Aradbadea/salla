@@ -1,0 +1,11 @@
+{#
+| Variable        | Type    | Description                         |
+|-----------------|---------|-------------------------------------|
+| component.text  | string  | Short brand line, e.g. "MONTRE SINCE 2020" |
+| position        | int     | Sorting number start from zero      |
+#}
+{% if component.text %}
+<section component-id="{{ componentId }}" data-testid="montre-strip" class="montre-strip">
+    <p>{{ component.text }}</p>
+</section>
+{% endif %}

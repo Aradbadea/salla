@@ -1,0 +1,36 @@
+{#
+| Variable                    | Type       | Description                                |
+|-----------------------------|------------|--------------------------------------------|
+| component.title             | ?string    | Section heading, e.g. "Immediate Purchase" |
+| component.category          | object[]   | Category to pull products from             |
+| component.products          | Product[]  | Or hand-picked products                    |
+| component.display_all_url   | ?string    | "View all" link                            |
+| component.tinted            | bool       | Warm background band                       |
+| position                    | int        | Sorting number start from zero             |
+#}
+{% set display_all = component.display_all_url %}
+<section component-id="{{ componentId }}" data-testid="montre-products" class="montre-section montre-products {{ component.tinted ? 'montre-products--tinted' : '' }}">
+    <div class="montre-container">
+        <div class="montre-products__head">
+            {% if component.title %}
+                <h2 class="montre-heading">{{ component.title }}</h2>
+            {% endif %}
+            {% if display_all and display_all != '#' %}
+                <a href="{{ display_all }}" class="montre-link">{{ trans('blocks.home.display_all') }}</a>
+            {% endif %}
+        </div>
+        <salla-products-list
+            data-testid="montre-products-list"
+            {% if component.products|length %}
+                source="selected"
+                source-value="[{{ component.products|map((product) => product.id)|join(',') }}]"
+            {% elseif component.category|length %}
+                source="categories"
+                source-value="[{{ component.category|map((cat) => cat.id)|join(',') }}]"
+            {% else %}
+                source="latest"
+            {% endif %}
+            limit="{{ component.limit ?: 8 }}"
+        ></salla-products-list>
+    </div>
+</section>

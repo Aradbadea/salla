@@ -1,0 +1,29 @@
+{#
+| Variable                  | Type     | Description                         |
+|---------------------------|----------|-------------------------------------|
+| component.title           | ?string  | Section heading, e.g. "Shop Montre" |
+| component.items           | object[] | Category tiles                      |
+| component.items[].image   | string   | Tile image (square/portrait)        |
+| component.items[].title   | string   | Tile label                          |
+| component.items[].url     | string   | Link                                |
+| position                  | int      | Sorting number start from zero      |
+#}
+<section component-id="{{ componentId }}" data-testid="montre-categories" class="montre-section montre-categories">
+    <div class="montre-container">
+        {% if component.title %}
+            <h2 class="montre-heading">{{ component.title }}</h2>
+        {% endif %}
+        <div class="montre-categories__grid">
+            {% for item in component.items %}
+                <a href="{{ item.url }}" class="montre-categories__tile">
+                    <div class="montre-categories__image">
+                        {% if item.image %}
+                            <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" width="600" height="750">
+                        {% endif %}
+                    </div>
+                    <span class="montre-categories__label">{{ item.title }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
